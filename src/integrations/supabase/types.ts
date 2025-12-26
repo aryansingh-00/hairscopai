@@ -14,7 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scalp_scans: {
+        Row: {
+          causes: Json | null
+          conditions: Json | null
+          created_at: string
+          dos_and_donts: Json | null
+          hair_care_routine: Json | null
+          health_score: number | null
+          id: string
+          image_url: string | null
+          recommendations: Json | null
+          user_id: string
+        }
+        Insert: {
+          causes?: Json | null
+          conditions?: Json | null
+          created_at?: string
+          dos_and_donts?: Json | null
+          hair_care_routine?: Json | null
+          health_score?: number | null
+          id?: string
+          image_url?: string | null
+          recommendations?: Json | null
+          user_id: string
+        }
+        Update: {
+          causes?: Json | null
+          conditions?: Json | null
+          created_at?: string
+          dos_and_donts?: Json | null
+          hair_care_routine?: Json | null
+          health_score?: number | null
+          id?: string
+          image_url?: string | null
+          recommendations?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,10 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, LogOut, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const navLinks = [
     { href: "#how-it-works", label: "How It Works" },
@@ -13,12 +23,17 @@ const Navbar = () => {
     { href: "#faq", label: "FAQ" },
   ];
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border/50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
+          <a href="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-soft group-hover:shadow-medium transition-shadow">
               <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
@@ -42,12 +57,33 @@ const Navbar = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" size="sm">
-              Sign In
-            </Button>
-            <Button size="sm">
-              Get Started Free
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <User className="w-4 h-4" />
+                    <span className="max-w-[120px] truncate">
+                      {user.email?.split('@')[0]}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" onClick={() => navigate('/auth')}>
+                  Sign In
+                </Button>
+                <Button size="sm" onClick={() => navigate('/auth')}>
+                  Get Started Free
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -81,12 +117,26 @@ const Navbar = () => {
                   </a>
                 ))}
                 <div className="pt-4 space-y-3 border-t border-border">
-                  <Button variant="outline" className="w-full">
-                    Sign In
-                  </Button>
-                  <Button className="w-full">
-                    Get Started Free
-                  </Button>
+                  {user ? (
+                    <>
+                      <p className="text-sm text-muted-foreground">
+                        Signed in as {user.email}
+                      </p>
+                      <Button variant="outline" className="w-full" onClick={handleSignOut}>
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button variant="outline" className="w-full" onClick={() => navigate('/auth')}>
+                        Sign In
+                      </Button>
+                      <Button className="w-full" onClick={() => navigate('/auth')}>
+                        Get Started Free
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>

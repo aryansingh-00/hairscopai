@@ -1,16 +1,33 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Upload, Camera, Image, X, Loader2 } from "lucide-react";
+import { Upload, Camera, Image, X, Loader2, LogIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import AnalysisResults from "./AnalysisResults";
+
+interface AnalysisResult {
+  healthScore: number;
+  conditions: Array<{ name: string; severity: 'mild' | 'moderate' | 'severe'; description: string }>;
+  causes: Array<{ category: string; description: string }>;
+  recommendations: Array<{ type: string; title: string; description: string }>;
+  hairCareRoutine: { daily: string[]; weekly: string[]; monthly: string[] };
+  dosAndDonts: { dos: string[]; donts: string[] };
+  overallAssessment: string;
+}
 
 const UploadSection = () => {
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -27,6 +44,16 @@ const UploadSection = () => {
     e.stopPropagation();
     setDragActive(false);
 
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please sign in to upload and analyze your scalp images.",
+        variant: "destructive",
+      });
+      navigate('/auth');
+      return;
+    }
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFile(e.dataTransfer.files[0]);
     }
@@ -42,7 +69,17 @@ const UploadSection = () => {
       return;
     }
 
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please upload an image smaller than 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setSelectedFile(file);
+    setAnalysisResult(null);
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result as string);
@@ -51,29 +88,97 @@ const UploadSection = () => {
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please sign in to upload and analyze your scalp images.",
+        variant: "destructive",
+      });
+      navigate('/auth');
+      return;
+    }
+
     if (e.target.files && e.target.files[0]) {
       handleFile(e.target.files[0]);
     }
   };
 
+  const handleUploadClick = () => {
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please sign in to upload and analyze your scalp images.",
+        variant: "destructive",
+      });
+      navigate('/auth');
+      return;
+    }
+    fileInputRef.current?.click();
+  };
+
   const clearSelection = () => {
     setSelectedFile(null);
     setPreview(null);
+    setAnalysisResult(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
-  const startAnalysis = () => {
+  const startAnalysis = async () => {
+    if (!preview || !user) return;
+
     setIsAnalyzing(true);
-    // Simulate analysis - in production this would call the AI backend
-    setTimeout(() => {
-      setIsAnalyzing(false);
+    setAnalysisResult(null);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-scalp', {
+        body: { imageBase64: preview },
+      });
+
+      if (error) {
+        console.error('Analysis error:', error);
+        throw new Error(error.message || 'Failed to analyze image');
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setAnalysisResult(data);
+
+      // Save scan to database
+      const { error: saveError } = await supabase
+        .from('scalp_scans')
+        .insert({
+          user_id: user.id,
+          health_score: data.healthScore,
+          conditions: data.conditions,
+          recommendations: data.recommendations,
+          causes: data.causes,
+          hair_care_routine: data.hairCareRoutine,
+          dos_and_donts: data.dosAndDonts,
+        });
+
+      if (saveError) {
+        console.error('Failed to save scan:', saveError);
+      }
+
       toast({
         title: "Analysis Complete!",
-        description: "Your scalp health report is ready. Connect to Lovable Cloud to enable AI analysis.",
+        description: `Your scalp health score is ${data.healthScore}%.`,
       });
-    }, 3000);
+
+    } catch (error) {
+      console.error('Analysis failed:', error);
+      toast({
+        title: "Analysis Failed",
+        description: error instanceof Error ? error.message : "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
@@ -109,6 +214,7 @@ const UploadSection = () => {
               ref={fileInputRef}
               type="file"
               accept="image/*"
+              capture="environment"
               onChange={handleFileInput}
               className="hidden"
             />
@@ -124,7 +230,7 @@ const UploadSection = () => {
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
                   onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={handleUploadClick}
                   className={`
                     aspect-video rounded-2xl border-2 border-dashed cursor-pointer
                     flex flex-col items-center justify-center p-8 transition-all duration-300
@@ -141,16 +247,24 @@ const UploadSection = () => {
                     {dragActive ? "Drop your image here" : "Drop your scalp image here"}
                   </p>
                   <p className="text-sm text-muted-foreground mb-4">or click to browse</p>
-                  <div className="flex gap-4">
-                    <Button variant="secondary" size="sm">
-                      <Image className="w-4 h-4 mr-2" />
-                      Choose File
+                  
+                  {!user ? (
+                    <Button variant="hero" size="lg" onClick={(e) => { e.stopPropagation(); navigate('/auth'); }}>
+                      <LogIn className="w-4 h-4 mr-2" />
+                      Sign In to Upload
                     </Button>
-                    <Button variant="outline" size="sm">
-                      <Camera className="w-4 h-4 mr-2" />
-                      Take Photo
-                    </Button>
-                  </div>
+                  ) : (
+                    <div className="flex gap-4">
+                      <Button variant="secondary" size="sm" onClick={(e) => e.stopPropagation()}>
+                        <Image className="w-4 h-4 mr-2" />
+                        Choose File
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
+                        <Camera className="w-4 h-4 mr-2" />
+                        Take Photo
+                      </Button>
+                    </div>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div
@@ -204,37 +318,66 @@ const UploadSection = () => {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-4">
+                  {!analysisResult && (
+                    <div className="flex gap-4">
+                      <Button
+                        onClick={startAnalysis}
+                        disabled={isAnalyzing}
+                        variant="hero"
+                        size="lg"
+                        className="flex-1"
+                      >
+                        {isAnalyzing ? (
+                          <>
+                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                            Analyzing...
+                          </>
+                        ) : (
+                          "Start AI Analysis"
+                        )}
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Analysis Results */}
+                  {analysisResult && (
+                    <AnalysisResults
+                      healthScore={analysisResult.healthScore}
+                      conditions={analysisResult.conditions}
+                      causes={analysisResult.causes}
+                      recommendations={analysisResult.recommendations}
+                      hairCareRoutine={analysisResult.hairCareRoutine}
+                      dosAndDonts={analysisResult.dosAndDonts}
+                      overallAssessment={analysisResult.overallAssessment}
+                    />
+                  )}
+
+                  {/* New Scan Button */}
+                  {analysisResult && (
                     <Button
-                      onClick={startAnalysis}
-                      disabled={isAnalyzing}
-                      variant="hero"
+                      onClick={clearSelection}
+                      variant="outline"
                       size="lg"
-                      className="flex-1"
+                      className="w-full"
                     >
-                      {isAnalyzing ? (
-                        <>
-                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                          Analyzing...
-                        </>
-                      ) : (
-                        "Start AI Analysis"
-                      )}
+                      Start New Analysis
                     </Button>
-                  </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
 
             {/* Tips */}
-            <div className="mt-6 p-4 rounded-xl bg-muted/50 border border-border">
-              <p className="text-sm font-medium text-foreground mb-2">📸 Tips for best results:</p>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Ensure good lighting on your scalp</li>
-                <li>• Take the photo from 6-8 inches away</li>
-                <li>• Part your hair to expose the scalp clearly</li>
-              </ul>
-            </div>
+            {!analysisResult && (
+              <div className="mt-6 p-4 rounded-xl bg-muted/50 border border-border">
+                <p className="text-sm font-medium text-foreground mb-2">📸 Tips for best results:</p>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Ensure good lighting on your scalp</li>
+                  <li>• Take the photo from 6-8 inches away</li>
+                  <li>• Part your hair to expose the scalp clearly</li>
+                </ul>
+              </div>
+            )}
           </div>
         </motion.div>
       </div>
