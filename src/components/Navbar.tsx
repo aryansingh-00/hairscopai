@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sparkles, LogOut, User } from "lucide-react";
+import { Menu, X, Sparkles, LogOut, User, History } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -68,6 +68,10 @@ const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                    <History className="w-4 h-4 mr-2" />
+                    Scan History
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="w-4 h-4 mr-2" />
                     Sign Out
@@ -124,7 +128,11 @@ const Navbar = () => {
                       <p className="text-sm text-muted-foreground">
                         Signed in as {user.email}
                       </p>
-                      <Button variant="outline" className="w-full" onClick={handleSignOut}>
+                      <Button variant="outline" className="w-full" onClick={() => { setIsOpen(false); navigate('/dashboard'); }}>
+                        <History className="w-4 h-4 mr-2" />
+                        Scan History
+                      </Button>
+                      <Button variant="ghost" className="w-full" onClick={handleSignOut}>
                         <LogOut className="w-4 h-4 mr-2" />
                         Sign Out
                       </Button>

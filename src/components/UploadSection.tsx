@@ -126,12 +126,26 @@ const UploadSection = () => {
   };
 
   const startAnalysis = async () => {
-    if (!preview || !user) return;
+    if (!preview || !user || !selectedFile) return;
 
     setIsAnalyzing(true);
     setAnalysisResult(null);
 
     try {
+      // Upload image to storage first
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('scalp-images')
+        .upload(fileName, selectedFile);
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw new Error('Failed to upload image');
+      }
+
+      // Analyze the image
       const { data, error } = await supabase.functions.invoke('analyze-scalp', {
         body: { imageBase64: preview },
       });
@@ -147,7 +161,7 @@ const UploadSection = () => {
 
       setAnalysisResult(data);
 
-      // Save scan to database
+      // Save scan to database with image URL
       const { error: saveError } = await supabase
         .from('scalp_scans')
         .insert({
@@ -158,6 +172,7 @@ const UploadSection = () => {
           causes: data.causes,
           hair_care_routine: data.hairCareRoutine,
           dos_and_donts: data.dosAndDonts,
+          image_url: fileName,
         });
 
       if (saveError) {
