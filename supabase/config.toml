@@ -1,4 +1,8 @@
 project_id = "ouyrxkmmwchmsuzadvvb"
 
+[auth.password]
+min_length = 8
+leaked_password_protection_enabled = true
+
 [functions.analyze-scalp]
 verify_jwt = false
