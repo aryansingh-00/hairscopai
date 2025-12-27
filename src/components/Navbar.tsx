@@ -33,25 +33,25 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 group">
+          <button onClick={() => navigate('/')} className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-soft group-hover:shadow-medium transition-shadow">
               <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-bold text-lg text-foreground hidden sm:block">
               ScalpAI
             </span>
-          </a>
+          </button>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link.href}
-                href={link.href}
+                onClick={() => document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-muted-foreground hover:text-foreground font-medium transition-colors"
               >
                 {link.label}
-              </a>
+              </button>
             ))}
           </div>
 
@@ -107,14 +107,16 @@ const Navbar = () => {
             >
               <div className="py-4 space-y-4">
                 {navLinks.map((link) => (
-                  <a
+                  <button
                     key={link.href}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="block text-muted-foreground hover:text-foreground font-medium py-2 transition-colors"
+                    onClick={() => {
+                      setIsOpen(false);
+                      document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="block text-muted-foreground hover:text-foreground font-medium py-2 transition-colors w-full text-left"
                   >
                     {link.label}
-                  </a>
+                  </button>
                 ))}
                 <div className="pt-4 space-y-3 border-t border-border">
                   {user ? (
