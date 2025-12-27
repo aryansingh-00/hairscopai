@@ -255,11 +255,11 @@ const UploadSection = () => {
                     </Button>
                   ) : (
                     <div className="flex gap-4">
-                      <Button variant="secondary" size="sm" onClick={(e) => e.stopPropagation()}>
+                      <Button variant="secondary" size="sm">
                         <Image className="w-4 h-4 mr-2" />
                         Choose File
                       </Button>
-                      <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
+                      <Button variant="outline" size="sm">
                         <Camera className="w-4 h-4 mr-2" />
                         Take Photo
                       </Button>
