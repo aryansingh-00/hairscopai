@@ -1,1 +1,4 @@
 project_id = "ouyrxkmmwchmsuzadvvb"
+
+[functions.analyze-scalp]
+verify_jwt = false
