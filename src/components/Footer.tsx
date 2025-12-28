@@ -47,7 +47,7 @@ const Footer = () => {
               <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-soft">
                 <Sparkles className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="font-bold text-xl text-foreground">ScalpAI</span>
+              <span className="font-bold text-xl text-foreground">HAIRSCOPAi</span>
             </a>
             <p className="text-muted-foreground text-sm mb-4 max-w-xs">
               AI-powered hair and scalp analysis for personalized care recommendations.
@@ -123,7 +123,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} ScalpAI. All rights reserved.
+            © {currentYear} HAIRSCOPAi. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground">
             ⚠️ Disclaimer: This tool is for informational purposes only and is not a substitute for professional medical advice.
