@@ -11,22 +11,22 @@ const Footer = () => {
       { label: "API", href: "#" },
     ],
     company: [
-      { label: "About Us", href: "#" },
-      { label: "Blog", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Press", href: "#" },
+      { label: "About Us", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Careers", href: "/careers" },
+      { label: "Press", href: "/press" },
     ],
     support: [
-      { label: "Help Center", href: "#" },
-      { label: "Contact", href: "#" },
+      { label: "Help Center", href: "/help" },
+      { label: "Contact", href: "/contact" },
       { label: "FAQ", href: "#faq" },
-      { label: "Status", href: "#" },
+      { label: "Status", href: "/status" },
     ],
     legal: [
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
-      { label: "GDPR", href: "#" },
-      { label: "Cookie Policy", href: "#" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "GDPR", href: "/privacy" },
+      { label: "Cookie Policy", href: "/privacy" },
     ],
   };
 
