@@ -33,8 +33,8 @@ const Footer = () => {
   const socialLinks = [
     { icon: Twitter, href: "#", label: "Twitter" },
     { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Mail, href: "#", label: "Email" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/aryan-singh-56a32736b", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:aryansingh981860@gmail.com", label: "Email" },
   ];
 
   return (
