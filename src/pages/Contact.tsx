@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -17,11 +18,27 @@ const Contact = () => {
     subject: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you within 24 hours.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("send-contact-email", {
+        body: formData,
+      });
+
+      if (error) throw error;
+
+      toast.success("Message sent! We'll get back to you within 24 hours.");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error: any) {
+      console.error("Error sending message:", error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -128,9 +145,9 @@ const Contact = () => {
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full" size="lg">
+                    <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
                       <Send className="w-4 h-4 mr-2" />
-                      Send Message
+                      {isSubmitting ? "Sending..." : "Send Message"}
                     </Button>
                   </form>
                 </div>
