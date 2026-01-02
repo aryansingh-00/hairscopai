@@ -61,11 +61,21 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
-              <Button variant="hero" size="xl" className="group">
+              <Button 
+                variant="hero" 
+                size="xl" 
+                className="group"
+                onClick={() => document.getElementById('analyze')?.scrollIntoView({ behavior: 'smooth' })}
+              >
                 <Upload className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                 Upload Image
               </Button>
-              <Button variant="hero-outline" size="xl" className="group">
+              <Button 
+                variant="hero-outline" 
+                size="xl" 
+                className="group"
+                onClick={() => document.getElementById('analyze')?.scrollIntoView({ behavior: 'smooth' })}
+              >
                 <Camera className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                 Take Photo
               </Button>
