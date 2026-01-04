@@ -1,4 +1,4 @@
-import { Sparkles, Mail, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Sparkles, Mail, Twitter, Instagram, Linkedin, MessageCircle } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -34,6 +34,7 @@ const Footer = () => {
     { icon: Twitter, href: "#", label: "Twitter" },
     { icon: Instagram, href: "https://www.instagram.com/aryan.singh.o7", label: "Instagram" },
     { icon: Linkedin, href: "https://www.linkedin.com/in/aryan-singh-56a32736b", label: "LinkedIn" },
+    { icon: MessageCircle, href: "https://wa.me/919818600000", label: "WhatsApp" },
     { icon: Mail, href: "mailto:aryansingh981860@gmail.com", label: "Email" },
   ];
 
