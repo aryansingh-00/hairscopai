@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Upload, Camera, Shield, Zap, Star } from "lucide-react";
+import { Upload, Camera, Shield, Zap, Star, Snowflake } from "lucide-react";
 import heroImage from "@/assets/hero-scalp-analysis.jpg";
 
 const HeroSection = () => {
@@ -11,15 +11,20 @@ const HeroSection = () => {
         <img 
           src={heroImage} 
           alt="AI Hair Analysis Technology" 
-          className="w-full h-full object-cover opacity-20"
+          className="w-full h-full object-cover opacity-15"
         />
-        <div className="absolute inset-0 gradient-hero opacity-90" />
+        <div className="absolute inset-0 gradient-hero opacity-95" />
       </div>
       
-      {/* Background decorations */}
+      {/* Winter decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse-soft" />
+        {/* Icy blue glows */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/15 rounded-full blur-3xl animate-pulse-soft" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-40 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: "2s" }} />
+        
+        {/* Frost overlay effect */}
+        <div className="absolute inset-0 gradient-frost opacity-50" />
       </div>
 
       <div className="container mx-auto px-4 py-16 md:py-24 relative">
@@ -31,26 +36,27 @@ const HeroSection = () => {
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
           >
-            {/* Trust Badge */}
+            {/* Trust Badge - Winter themed */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 border border-primary/20 mb-6 frost-blur shadow-frost"
             >
+              <Snowflake className="w-4 h-4 text-primary animate-pulse-soft" />
               <div className="flex -space-x-1">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 text-accent fill-accent" />
                 ))}
               </div>
-              <span className="text-sm font-medium text-foreground">Trusted by 50,000+ Users</span>
+              <span className="text-sm font-medium text-foreground">Winter Special - 50,000+ Users</span>
             </motion.div>
 
-            {/* Headline */}
+            {/* Headline - Winter styled */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
               <span className="text-foreground">AI-Powered</span>
               <br />
-              <span className="text-gradient">Hair & Scalp</span>
+              <span className="text-gradient-winter">Hair & Scalp</span>
               <br />
               <span className="text-foreground">Analysis</span>
             </h1>
@@ -102,8 +108,8 @@ const HeroSection = () => {
             className="relative"
           >
             <div className="relative max-w-md mx-auto">
-              {/* Main Card */}
-              <div className="relative bg-card rounded-3xl shadow-medium p-6 border border-border overflow-hidden">
+              {/* Main Card - Frosted glass effect */}
+              <div className="relative bg-card/90 frost-blur rounded-3xl shadow-frost p-6 border border-primary/20 overflow-hidden">
                 {/* Decorative gradient */}
                 <div className="absolute top-0 left-0 right-0 h-32 gradient-primary opacity-10" />
                 
