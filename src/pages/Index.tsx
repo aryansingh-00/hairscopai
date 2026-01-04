@@ -8,6 +8,7 @@ import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import Background3D from "@/components/Background3D";
+import Snowfall from "@/components/Snowfall";
 
 const Index = () => {
   return (
@@ -370,6 +371,7 @@ const Index = () => {
 
       <div className="min-h-screen">
         <Background3D />
+        <Snowfall />
         <Navbar />
         <main>
           <HeroSection />
