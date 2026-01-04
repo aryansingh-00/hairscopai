@@ -31,7 +31,7 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: Twitter, href: "#", label: "Twitter" },
+    { icon: Twitter, href: "https://x.com/aryan.singh.o7", label: "Twitter" },
     { icon: Instagram, href: "https://www.instagram.com/aryan.singh.o7", label: "Instagram" },
     { icon: Linkedin, href: "https://www.linkedin.com/in/aryan-singh-56a32736b", label: "LinkedIn" },
     { icon: MessageCircle, href: "https://wa.me/919818603300", label: "WhatsApp" },
