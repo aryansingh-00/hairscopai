@@ -6,14 +6,23 @@ import heroImage from "@/assets/hero-scalp-analysis.jpg";
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen overflow-hidden pt-20">
+      {/* Aurora Borealis Effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="aurora-container absolute inset-0">
+          <div className="aurora aurora-1" />
+          <div className="aurora aurora-2" />
+          <div className="aurora aurora-3" />
+        </div>
+      </div>
+
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
           src={heroImage} 
           alt="AI Hair Analysis Technology" 
-          className="w-full h-full object-cover opacity-15"
+          className="w-full h-full object-cover opacity-10"
         />
-        <div className="absolute inset-0 gradient-hero opacity-95" />
+        <div className="absolute inset-0 gradient-hero opacity-90" />
       </div>
       
       {/* Winter decorations */}

@@ -371,3 +371,126 @@
   opacity: 1;
   animation: shimmer 1.5s linear infinite;
 }
+
+/* Aurora Borealis Effect */
+@keyframes aurora-wave {
+  0% {
+    transform: translateX(-50%) translateY(0) rotate(-5deg) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-20px) rotate(5deg) scale(1.1);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0) rotate(-5deg) scale(1);
+  }
+}
+
+@keyframes aurora-shift {
+  0%, 100% {
+    opacity: 0.4;
+    filter: hue-rotate(0deg);
+  }
+  33% {
+    opacity: 0.6;
+    filter: hue-rotate(30deg);
+  }
+  66% {
+    opacity: 0.5;
+    filter: hue-rotate(-20deg);
+  }
+}
+
+.aurora-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  width: 200%;
+  height: 100%;
+  border-radius: 50%;
+  filter: blur(80px);
+  mix-blend-mode: screen;
+  animation: aurora-wave 8s ease-in-out infinite, aurora-shift 12s ease-in-out infinite;
+}
+
+.aurora-1 {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(180 80% 50% / 0.3) 20%,
+    hsl(200 85% 55% / 0.4) 40%,
+    hsl(160 70% 45% / 0.3) 60%,
+    transparent 100%
+  );
+  animation-delay: 0s;
+  transform: translateX(-50%) rotate(-5deg);
+}
+
+.aurora-2 {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(280 60% 55% / 0.25) 25%,
+    hsl(320 65% 50% / 0.3) 50%,
+    hsl(200 75% 50% / 0.25) 75%,
+    transparent 100%
+  );
+  animation-delay: -3s;
+  transform: translateX(-40%) rotate(3deg);
+}
+
+.aurora-3 {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(140 60% 45% / 0.2) 30%,
+    hsl(180 70% 50% / 0.3) 50%,
+    hsl(220 65% 55% / 0.2) 70%,
+    transparent 100%
+  );
+  animation-delay: -6s;
+  transform: translateX(-60%) rotate(-8deg);
+}
+
+.dark .aurora {
+  mix-blend-mode: lighten;
+}
+
+.dark .aurora-1 {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(180 80% 40% / 0.4) 20%,
+    hsl(200 85% 45% / 0.5) 40%,
+    hsl(160 70% 35% / 0.4) 60%,
+    transparent 100%
+  );
+}
+
+.dark .aurora-2 {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(280 60% 45% / 0.35) 25%,
+    hsl(320 65% 40% / 0.4) 50%,
+    hsl(200 75% 40% / 0.35) 75%,
+    transparent 100%
+  );
+}
+
+.dark .aurora-3 {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(140 60% 35% / 0.3) 30%,
+    hsl(180 70% 40% / 0.4) 50%,
+    hsl(220 65% 45% / 0.3) 70%,
+    transparent 100%
+  );
+}
