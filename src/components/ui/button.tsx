@@ -5,16 +5,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 sparkle-button",
   {
     variants: {
       variant: {
         default:
-          "gradient-primary text-primary-foreground shadow-soft hover:shadow-medium hover:scale-[1.02] active:scale-[0.98]",
+          "gradient-primary text-primary-foreground shadow-soft hover:shadow-medium hover:scale-[1.02] active:scale-[0.98] interactive-sparkle",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
-          "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground",
+          "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground interactive-sparkle",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: 
@@ -22,11 +22,11 @@ const buttonVariants = cva(
         link: 
           "text-primary underline-offset-4 hover:underline",
         hero:
-          "gradient-primary text-primary-foreground shadow-medium hover:shadow-glow hover:scale-[1.03] active:scale-[0.98] text-base",
+          "gradient-primary text-primary-foreground shadow-medium hover:shadow-glow hover:scale-[1.03] active:scale-[0.98] text-base interactive-sparkle",
         "hero-outline":
-          "border-2 border-primary/30 bg-card/80 backdrop-blur-sm text-foreground hover:border-primary hover:bg-secondary shadow-card",
+          "border-2 border-primary/30 bg-card/80 backdrop-blur-sm text-foreground hover:border-primary hover:bg-secondary shadow-card interactive-sparkle",
         accent:
-          "gradient-accent text-accent-foreground shadow-soft hover:shadow-medium hover:scale-[1.02]",
+          "gradient-accent text-accent-foreground shadow-soft hover:shadow-medium hover:scale-[1.02] interactive-sparkle",
       },
       size: {
         default: "h-11 px-5 py-2",

@@ -256,3 +256,118 @@
     transform: scale(1.2);
   }
 }
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+@keyframes sparkle-burst {
+  0% {
+    opacity: 1;
+    transform: scale(0) translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) translate(var(--tx, 0), var(--ty, 0));
+  }
+}
+
+/* Sparkle button effect */
+.sparkle-button {
+  position: relative;
+  overflow: visible;
+}
+
+.sparkle-button::before,
+.sparkle-button::after {
+  content: '✦';
+  position: absolute;
+  font-size: 10px;
+  color: hsl(var(--primary));
+  opacity: 0;
+  pointer-events: none;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.sparkle-button::before {
+  top: -4px;
+  right: -4px;
+  animation-delay: 0s;
+}
+
+.sparkle-button::after {
+  bottom: -4px;
+  left: -4px;
+  animation-delay: 1s;
+}
+
+.sparkle-button:hover::before,
+.sparkle-button:hover::after {
+  opacity: 1;
+  animation: twinkle 0.8s ease-in-out infinite;
+}
+
+/* Multi-sparkle wrapper */
+.sparkle-container {
+  position: relative;
+}
+
+.sparkle-container .sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+}
+
+.sparkle-container .sparkle::before {
+  content: '✦';
+  position: absolute;
+  font-size: 12px;
+  color: hsl(var(--primary));
+  animation: twinkle 1.5s ease-in-out infinite;
+}
+
+.sparkle-container .sparkle:nth-child(1) { top: -8px; left: 20%; animation-delay: 0s; }
+.sparkle-container .sparkle:nth-child(2) { top: -6px; right: 15%; animation-delay: 0.3s; }
+.sparkle-container .sparkle:nth-child(3) { bottom: -8px; left: 30%; animation-delay: 0.6s; }
+.sparkle-container .sparkle:nth-child(4) { bottom: -6px; right: 25%; animation-delay: 0.9s; }
+
+/* Interactive sparkle on hover */
+.interactive-sparkle {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.interactive-sparkle:hover {
+  filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.5));
+}
+
+.interactive-sparkle::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, 
+    transparent 20%, 
+    hsl(var(--primary) / 0.3) 40%, 
+    hsl(var(--primary) / 0.5) 50%, 
+    hsl(var(--primary) / 0.3) 60%, 
+    transparent 80%
+  );
+  background-size: 200% 200%;
+  border-radius: inherit;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.interactive-sparkle:hover::before {
+  opacity: 1;
+  animation: shimmer 1.5s linear infinite;
+}
