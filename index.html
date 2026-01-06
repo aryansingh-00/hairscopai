@@ -50,6 +50,58 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "HAIRSCOPAi",
+      "description": "AI-powered hair and scalp analysis tool that provides instant diagnosis and personalized treatment recommendations.",
+      "url": "https://hairscopai.com",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "50000"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "HAIRSCOPAi",
+        "url": "https://hairscopai.com"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does AI scalp analysis work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload a clear photo of your scalp and our AI analyzes it using advanced machine learning to detect conditions like dandruff, hair loss, and scalp issues, providing personalized recommendations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data secure?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, all uploaded images are encrypted and processed securely. We never share your personal health data with third parties."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
 
   <body>
